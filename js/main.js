@@ -1,6 +1,13 @@
 (() => {
   const $ = (s) => document.querySelector(s);
   const pageUrl = CONFIG.qrUrl || window.location.href.split("#")[0];
+  const LOGO_SRC = "img/logo.png";
+
+  /* ---------- Toast (mensajes abajo) ---------- */
+  const toast = (msg) => {
+    const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 3500);
+  };
 
   /* ---------- WhatsApp CTA ---------- */
   $("#ctaWhatsapp").href =
@@ -37,54 +44,76 @@
   $("#status").classList.add(open ? "is-open" : "is-closed");
   $("#statusText").textContent = open ? `Abierto · cierra ${h[1]}` : "Cerrado ahora";
 
-  /* ---------- QR ---------- */
-  const qrOpts = (el) => new QRCode(el, {
+  /* ---------- QR en pantalla ---------- */
+  const makeQR = (el) => new QRCode(el, {
     text: pageUrl, width: 380, height: 380,
     colorDark: "#0d3b23", colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H, // nivel H para tolerar el logo al centro
+    correctLevel: QRCode.CorrectLevel.H, // nivel H: aguanta el logo al centro
   });
-  qrOpts($("#qrDesktop"));
-  qrOpts($("#qrMobile"));
+  makeQR($("#qrDesktop"));
+  makeQR($("#qrMobile"));
+
+  /* ---------- Descargar QR con logo ---------- */
+  // Carga el logo desde cero (no depende de la imagen de la página)
+  const loadLogo = () => new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(`No se encontró ${LOGO_SRC}`));
+    img.src = `${LOGO_SRC}?t=${Date.now()}`; // evita caché
+  });
 
   document.querySelectorAll("[data-download]").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const box = document.getElementById(btn.dataset.download);
-      const src = box.querySelector("canvas");
-      // Compone QR + logo central en un PNG con borde blanco
+    btn.addEventListener("click", async () => {
+      if (location.protocol === "file:") {
+        toast("Abre la página con Live Server, no con doble clic");
+        return;
+      }
+
+      const src = document.getElementById(btn.dataset.download).querySelector("canvas");
       const pad = 40, size = src.width + pad * 2;
       const c = document.createElement("canvas");
       c.width = c.height = size;
       const ctx = c.getContext("2d");
-      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, size, size);
+
+      // Fondo blanco + QR
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, size, size);
       ctx.drawImage(src, pad, pad);
-               // Logo al centro del QR descargado
-         const b = Math.round(size * 0.2), x = (size - b) / 2;
-         ctx.fillStyle = "#fff";
-         ctx.fillRect(x - 10, x - 10, b + 20, b + 20);
-         const logo = box.parentElement.querySelector(".qr-badge");
-         if (logo && logo.complete && logo.naturalWidth) {
-           ctx.drawImage(logo, x, x, b, b);
-         } else {
-           ctx.fillStyle = "#0d3b23"; ctx.fillRect(x, x, b, b);
-           ctx.fillStyle = "#a8d84e"; ctx.font = `bold ${b * 0.6}px Georgia`;
-           ctx.textAlign = "center"; ctx.textBaseline = "middle";
-           ctx.fillText("C", size / 2, size / 2 + 2);
-         }
-      const a = document.createElement("a");
-      a.download = "conagra-qr.png"; a.href = c.toDataURL("image/png"); a.click();
+
+      // Recuadro blanco al centro + logo
+      const b = Math.round(size * 0.2), x = (size - b) / 2;
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(x - 12, x - 12, b + 24, b + 24);
+
+      try {
+        const logo = await loadLogo();
+        ctx.drawImage(logo, x, x, b, b);
+      } catch (err) {
+        toast(err.message);
+        console.error(err);
+        return; // no descarga un QR sin logo
+      }
+
+      try {
+        const a = document.createElement("a");
+        a.download = "conagra-qr.png";
+        a.href = c.toDataURL("image/png");
+        a.click();
+        toast("QR descargado");
+      } catch (err) {
+        toast("El navegador bloqueó la descarga (revisa la consola)");
+        console.error(err);
+      }
     });
   });
 
+  /* ---------- Modal QR (móvil) ---------- */
   const modal = $("#qrModal");
   $("#qrOpen").addEventListener("click", () => modal.showModal());
   $("#qrClose").addEventListener("click", () => modal.close());
   modal.addEventListener("click", (e) => { if (e.target === modal) modal.close(); });
 
   /* ---------- Compartir / copiar ---------- */
-  const toast = (msg) => {
-    const t = $("#toast"); t.textContent = msg; t.classList.add("show");
-    setTimeout(() => t.classList.remove("show"), 2000);
-  };
   const copy = async () => {
     try { await navigator.clipboard.writeText(pageUrl); toast("Enlace copiado"); }
     catch { toast("No se pudo copiar"); }
