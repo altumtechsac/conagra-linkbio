@@ -29,7 +29,7 @@ const CONFIG = {
     {
       name: "TikTok",
       desc: "Todo lo que necesitas, aquí",
-      url: "https://www.tiktok.com/@CAMBIAR_USUARIO", // TODO: poner el usuario real
+      url: "https://www.tiktok.com/@conagra.sac?_r=1&_t=ZS-9AhHZZKLBYr", // TODO: poner el usuario real
       icon: "fa-brands fa-tiktok",
       color: "#111111",
     },
