@@ -57,11 +57,19 @@
       const ctx = c.getContext("2d");
       ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, size, size);
       ctx.drawImage(src, pad, pad);
-      const b = 80, x = (size - b) / 2;
-      ctx.fillStyle = "#fff"; ctx.fillRect(x - 8, x - 8, b + 16, b + 16);
-      ctx.fillStyle = "#0d3b23"; ctx.fillRect(x, x, b, b);
-      ctx.fillStyle = "#a8d84e"; ctx.font = "bold 48px Georgia"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("C", size / 2, size / 2 + 2);
+               // Logo al centro del QR descargado
+         const b = Math.round(size * 0.2), x = (size - b) / 2;
+         ctx.fillStyle = "#fff";
+         ctx.fillRect(x - 10, x - 10, b + 20, b + 20);
+         const logo = box.parentElement.querySelector(".qr-badge");
+         if (logo && logo.complete && logo.naturalWidth) {
+           ctx.drawImage(logo, x, x, b, b);
+         } else {
+           ctx.fillStyle = "#0d3b23"; ctx.fillRect(x, x, b, b);
+           ctx.fillStyle = "#a8d84e"; ctx.font = `bold ${b * 0.6}px Georgia`;
+           ctx.textAlign = "center"; ctx.textBaseline = "middle";
+           ctx.fillText("C", size / 2, size / 2 + 2);
+         }
       const a = document.createElement("a");
       a.download = "conagra-qr.png"; a.href = c.toDataURL("image/png"); a.click();
     });
