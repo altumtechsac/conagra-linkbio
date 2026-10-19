@@ -85,5 +85,5 @@ const CONFIG = {
 
   // URL a la que apunta el QR. Si se deja vacío, usa la URL actual de la página.
   // Recomendado: poner la URL final de GitHub Pages para que el QR impreso nunca cambie.
-  qrUrl: "",
+    qrUrl: "https://altumtechsac.github.io/conagra-linkbio/",
 };
