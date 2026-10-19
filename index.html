@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>CONAGRA · Redes sociales</title>
+  <meta name="description" content="Conagra SAC — Soluciones para el desarrollo y productividad de tus cultivos. Encuéntranos en redes sociales." />
+  <meta name="theme-color" content="#0d3b23" />
+
+  <!-- Open Graph (vista previa al compartir en WhatsApp/Facebook) -->
+  <meta property="og:title" content="CONAGRA · Redes sociales" />
+  <meta property="og:description" content="Especialistas en soluciones para el desarrollo y productividad de tus cultivos." />
+  <meta property="og:image" content="https://conagra.com.pe/wp-content/uploads/2018/11/hortaliza-de-hoja-banner-1-1.jpg" />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="https://conagra.com.pe/wp-content/uploads/2025/08/cropped-conagra-icono-980x980-1-270x270.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Fondo decorativo -->
+  <div class="bg" aria-hidden="true">
+    <div class="bg__glow bg__glow--1"></div>
+    <div class="bg__glow bg__glow--2"></div>
+    <svg class="bg__lines" viewBox="0 0 1440 900" preserveAspectRatio="none">
+      <path d="M0 700 C 300 600, 500 820, 820 690 S 1260 560, 1440 640" />
+      <path d="M0 760 C 320 660, 520 880, 840 750 S 1280 620, 1440 700" />
+      <path d="M0 820 C 340 720, 540 940, 860 810 S 1300 680, 1440 760" />
+    </svg>
+  </div>
+
+  <main class="layout">
+    <!-- ===== Columna izquierda: info de empresa (solo se expande en desktop) ===== -->
+    <aside class="about" aria-label="Sobre Conagra">
+      <div class="about__inner">
+        <span class="eyebrow"><i class="fa-solid fa-seedling"></i> Consorcio Agropecuario Americano SAC</span>
+        <h2 class="about__title">Soluciones para el <em>desarrollo</em> y <em>productividad</em> de tus cultivos.</h2>
+        <p class="about__text">
+          Cuéntanos qué cultivo tienes y qué necesitas, y nuestro equipo técnico te orientará
+          con el programa de nutrición y protección adecuado.
+        </p>
+
+        <h3 class="about__subtitle">Nuestras líneas</h3>
+        <ul class="chips" id="productLines"></ul>
+
+        <div class="about__contact">
+          <a href="tel:+51983047594"><i class="fa-solid fa-phone"></i> 983 047 594</a>
+          <a href="mailto:comercial@conagra.com.pe"><i class="fa-solid fa-envelope"></i> comercial@conagra.com.pe</a>
+          <a href="https://conagra.com.pe/representantes-por-zonas/" target="_blank" rel="noopener"><i class="fa-solid fa-location-dot"></i> Representantes por zona</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ===== Columna central: tarjeta de enlaces (el foco) ===== -->
+    <section class="card" aria-label="Enlaces de Conagra">
+      <div class="card__cover">
+        <span class="status" id="status"><span class="status__dot"></span><span id="statusText">Cargando horario…</span></span>
+        <button class="icon-btn" id="shareBtn" aria-label="Compartir"><i class="fa-solid fa-share-nodes"></i></button>
+      </div>
+
+      <div class="card__head">
+        <div class="logo">
+          <img src="https://conagra.com.pe/wp-content/uploads/2025/08/cropped-conagra-icono-980x980-1-270x270.png"
+               alt="Logo Conagra" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'C'}))" />
+        </div>
+        <h1 class="brand">CONAGRA</h1>
+        <p class="tagline">Nutrición vegetal · Asesoría de cultivos</p>
+      </div>
+
+      <a class="cta" id="ctaWhatsapp" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp"></i>
+        <span><strong>¡Cotiza aquí!</strong><small>Escríbenos por WhatsApp</small></span>
+        <i class="fa-solid fa-arrow-right cta__arrow"></i>
+      </a>
+
+      <h2 class="section-title">Encuéntranos en</h2>
+      <nav class="links" id="links"></nav>
+
+      <div class="quick">
+        <a href="tel:+51983047594" class="quick__item"><i class="fa-solid fa-phone"></i><span>Llamar</span></a>
+        <a href="mailto:comercial@conagra.com.pe" class="quick__item"><i class="fa-solid fa-envelope"></i><span>Correo</span></a>
+        <button class="quick__item" id="qrOpen"><i class="fa-solid fa-qrcode"></i><span>QR</span></button>
+        <button class="quick__item" id="copyBtn"><i class="fa-solid fa-link"></i><span>Copiar</span></button>
+      </div>
+
+      <footer class="card__foot">
+        <a href="https://conagra.com.pe/libro-de-reclamaciones/" target="_blank" rel="noopener">
+          <i class="fa-solid fa-book"></i> Libro de reclamaciones
+        </a>
+        <span>© <span id="year"></span> Conagra SAC</span>
+      </footer>
+    </section>
+
+    <!-- ===== Columna derecha: QR + horario (solo desktop) ===== -->
+    <aside class="side" aria-label="Código QR y horario">
+      <div class="panel qr-panel">
+        <h3><i class="fa-solid fa-qrcode"></i> Escanéanos</h3>
+        <p>Comparte esta página con un solo escaneo.</p>
+        <div class="qr-box"><div id="qrDesktop"></div><span class="qr-badge">C</span></div>
+        <button class="btn-ghost" data-download="qrDesktop"><i class="fa-solid fa-download"></i> Descargar QR</button>
+      </div>
+
+      <div class="panel">
+        <h3><i class="fa-regular fa-clock"></i> Horario de atención</h3>
+        <ul class="hours" id="hours"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Modal QR (móvil) -->
+  <dialog class="modal" id="qrModal">
+    <button class="modal__close" id="qrClose" aria-label="Cerrar"><i class="fa-solid fa-xmark"></i></button>
+    <h3>Escanéanos</h3>
+    <div class="qr-box"><div id="qrMobile"></div><span class="qr-badge">C</span></div>
+    <button class="btn-ghost" data-download="qrMobile"><i class="fa-solid fa-download"></i> Descargar QR</button>
+  </dialog>
+
+  <div class="toast" id="toast" role="status"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
